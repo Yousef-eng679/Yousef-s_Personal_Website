@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import Image from 'next/image';
-import HeroScene from '@/components/3d/HeroScene';
+import ClientHeroScene from '@/components/3d/ClientHeroScene';
 import HeroSkillCarousel from '@/components/ui/HeroSkillCarousel';
 import ProjectCard from '@/components/ui/ProjectCard';
 import EmptyState from '@/components/ui/EmptyState';
@@ -83,7 +83,7 @@ export default async function HomePage() {
           <div className="lg:w-2/5 relative">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent-purple/25 rounded-full blur-[140px] -z-10 animate-pulse" style={{ animationDuration: '4s' }}></div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-accent-blue/20 rounded-full blur-[110px] -z-10 animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }}></div>
-            <HeroScene />
+            <ClientHeroScene />
           </div>
         </div>
       </section>

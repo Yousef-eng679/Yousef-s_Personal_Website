@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Hanken_Grotesk, Fira_Code } from 'next/font/google';
 import './globals.css';
-import BackgroundShader from '@/components/3d/BackgroundShader';
+import ClientBackgroundShader from '@/components/3d/ClientBackgroundShader';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
 import { createClient } from '@/utils/supabase/server';
@@ -55,7 +55,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.variable} ${hanken.variable} ${mono.variable} min-h-screen bg-surface text-slate-200 font-sans`}>
-        <BackgroundShader />
+        <ClientBackgroundShader />
         <div className="flex min-h-screen">
           <Sidebar profile={profile as Profile} />
           <div className="lg:ml-64 flex-1">
