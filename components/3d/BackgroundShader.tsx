@@ -35,17 +35,17 @@ export default function BackgroundShader() {
       
       void main() {
         vec2 st = gl_FragCoord.xy / u_resolution;
-        vec3 color1 = vec3(0.08, 0.07, 0.11); 
-        vec3 color2 = vec3(0.15, 0.1, 0.25);  
-        vec3 color3 = vec3(0.05, 0.05, 0.1);  
+        vec3 color1 = vec3(0.024, 0.016, 0.035); 
+        vec3 color2 = vec3(0.055, 0.039, 0.090);  
+        vec3 color3 = vec3(0.016, 0.012, 0.024);  
         
-        float n = noise(st * 2.0 + u_time * 0.1);
-        float wave = sin(st.x * 5.0 + u_time) * cos(st.y * 3.0 + u_time * 0.5) * 0.5 + 0.5;
+        float n = noise(st * 2.0 + u_time * 0.08);
+        float wave = sin(st.x * 4.0 + u_time * 0.8) * cos(st.y * 2.5 + u_time * 0.4) * 0.5 + 0.5;
         
-        vec3 finalColor = mix(color1, color2, wave);
-        finalColor = mix(finalColor, color3, n * 0.3);
+        vec3 finalColor = mix(color1, color2, wave * 0.6);
+        finalColor = mix(finalColor, color3, n * 0.25);
         
-        float grain = noise(st * u_time) * 0.05;
+        float grain = noise(st * u_time) * 0.03;
         
         gl_FragColor = vec4(finalColor + grain, 1.0);
       }
@@ -115,7 +115,7 @@ export default function BackgroundShader() {
     resizeCanvas();
 
     const render = () => {
-      webgl.clearColor(0.0, 0.0, 0.0, 1.0);
+      webgl.clearColor(0.02, 0.015, 0.03, 1.0);
       webgl.clear(webgl.COLOR_BUFFER_BIT);
 
       webgl.useProgram(programInfo.program);
