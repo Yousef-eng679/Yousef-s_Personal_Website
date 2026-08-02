@@ -42,10 +42,11 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
   };
 
   return (
-    <div 
+    <Link 
+      href={`/projects/${project.id}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="glass-card p-6 rounded-2xl flex flex-col h-full animate-fade-in-up relative group cursor-pointer"
+      className="glass-card p-6 rounded-2xl flex flex-col h-full animate-fade-in-up relative group cursor-pointer block transition-all duration-300 hover:border-accent-purple/50"
       style={{ animationDelay: `${index * 100}ms` }}
     >
       {/* Video Hover Layer or Media Preview */}
@@ -109,14 +110,11 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
       )}
       
       <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
-        <Link 
-          href={`/projects/${project.id}`}
-          className="text-xs font-bold text-white flex items-center gap-2 group/link w-fit"
-        >
+        <span className="text-xs font-bold text-white flex items-center gap-2 group-hover:text-accent-purple transition-colors">
           <span>View project</span>
-          <ArrowRight className="w-3.5 h-3.5 text-accent-purple transition-transform group-hover/link:translate-x-1.5" />
-        </Link>
+          <ArrowRight className="w-3.5 h-3.5 text-accent-purple transition-transform group-hover:translate-x-1.5" />
+        </span>
       </div>
-    </div>
+    </Link>
   );
 }

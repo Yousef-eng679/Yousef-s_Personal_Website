@@ -1,6 +1,7 @@
 'use client';
 
-import { Search, Bell, Sun } from 'lucide-react';
+import { Search, Shield } from 'lucide-react';
+import Link from 'next/link';
 import MobileSidebar from './MobileSidebar';
 import type { Profile } from '@/types/database';
 
@@ -25,15 +26,13 @@ export default function Header({ profile }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
-        <button className="p-2 text-slate-400 hover:text-white transition-colors">
-          <Bell className="w-5 h-5" />
-        </button>
-        <button className="p-2 text-slate-400 hover:text-white transition-colors">
-          <Sun className="w-5 h-5" />
-        </button>
-        <div className="w-8 h-8 rounded-full bg-accent-blue/20 border border-accent-blue/30 flex items-center justify-center ml-2 cursor-pointer">
-          <span className="text-xs font-bold text-accent-blue">Y</span>
-        </div>
+        <Link 
+          href="/admin" 
+          title="Admin Control Center"
+          className="w-9 h-9 rounded-full bg-accent-purple/20 border border-accent-purple/30 hover:border-accent-purple/60 flex items-center justify-center transition-all hover:scale-105 group"
+        >
+          <Shield className="w-4 h-4 text-accent-purple group-hover:text-white transition-colors" />
+        </Link>
       </div>
     </header>
   );

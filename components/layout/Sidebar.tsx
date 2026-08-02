@@ -74,12 +74,15 @@ export default function Sidebar({ profile }: SidebarProps) {
           )}
         </div>
 
-        <div className="flex items-center gap-3 p-3 bg-surface-low rounded-lg border border-white/5">
+        <Link
+          href="/contact"
+          className="flex items-center gap-3 p-3 bg-surface-low hover:bg-surface-container rounded-lg border border-white/5 transition-all group"
+        >
           <div className="relative">
             <div className={`w-2 h-2 rounded-full ${profile?.available_for_work ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`}></div>
           </div>
-          <span className="text-xs text-slate-400">{profile?.available_for_work ? 'Available for work' : 'Not available'}</span>
-        </div>
+          <span className="text-xs text-slate-400 group-hover:text-white transition-colors">{profile?.available_for_work ? 'Available for work' : 'Not available'}</span>
+        </Link>
       </div>
     </aside>
   );
