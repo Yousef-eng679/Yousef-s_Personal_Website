@@ -25,17 +25,17 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  // AUTH-01: Protect /admin routes
-  if (request.nextUrl.pathname.startsWith('/admin') && !user) {
+  // AUTH-01: Protect /ctrl-y0us3f routes
+  if (request.nextUrl.pathname.startsWith('/ctrl-y0us3f') && !user) {
     const url = request.nextUrl.clone();
-    url.pathname = '/login';
+    url.pathname = '/auth-y0us3f';
     return NextResponse.redirect(url);
   }
 
-  // AUTH-05: Redirect authenticated user from /login to /admin
-  if (request.nextUrl.pathname === '/login' && user) {
+  // AUTH-05: Redirect authenticated user from /auth-y0us3f to /ctrl-y0us3f
+  if (request.nextUrl.pathname === '/auth-y0us3f' && user) {
     const url = request.nextUrl.clone();
-    url.pathname = '/admin';
+    url.pathname = '/ctrl-y0us3f';
     return NextResponse.redirect(url);
   }
 

@@ -117,7 +117,7 @@ export default function AdminPage() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    router.push('/login');
+    router.push('/auth-y0us3f');
     router.refresh();
   };
 
