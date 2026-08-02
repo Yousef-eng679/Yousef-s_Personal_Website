@@ -9,6 +9,9 @@ export default function BackgroundShader() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Respect user reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
     if (!gl) {
       console.warn('WebGL not supported');
@@ -102,7 +105,7 @@ export default function BackgroundShader() {
     ];
     webgl.bufferData(webgl.ARRAY_BUFFER, new Float32Array(positions), webgl.STATIC_DRAW);
 
-    let animationFrameId: number;
+    let animationFrameId: number | null = null;
     const startTime = Date.now();
 
     const resizeCanvas = () => {
@@ -114,7 +117,7 @@ export default function BackgroundShader() {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    const render = () => {
+    const renderSingleFrame = (timeSeconds: number) => {
       webgl.clearColor(0.02, 0.015, 0.03, 1.0);
       webgl.clear(webgl.COLOR_BUFFER_BIT);
 
@@ -125,18 +128,47 @@ export default function BackgroundShader() {
       webgl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
 
       webgl.uniform2f(programInfo.uniformLocations.resolution, canvas.width, canvas.height);
-      webgl.uniform1f(programInfo.uniformLocations.time, (Date.now() - startTime) * 0.001);
+      webgl.uniform1f(programInfo.uniformLocations.time, timeSeconds);
 
       webgl.drawArrays(webgl.TRIANGLE_STRIP, 0, 4);
-
-      animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    const renderLoop = () => {
+      if (document.hidden) {
+        animationFrameId = null;
+        return;
+      }
+      renderSingleFrame((Date.now() - startTime) * 0.001);
+      animationFrameId = requestAnimationFrame(renderLoop);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (animationFrameId !== null) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+      } else {
+        if (animationFrameId === null && !prefersReducedMotion) {
+          animationFrameId = requestAnimationFrame(renderLoop);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    if (prefersReducedMotion) {
+      renderSingleFrame(1.0);
+    } else {
+      renderLoop();
+    }
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
     };
   }, []);
 

@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import type { Project } from '@/types/database';
 import { ArrowRight, Play, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ProjectCardProps {
   project: Project;
@@ -74,10 +75,12 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
         </div>
       ) : project.image_url ? (
         <div className="relative aspect-video w-full mb-6 rounded-xl overflow-hidden bg-surface-lowest border border-white/5 group-hover:border-accent-purple/40 transition-colors">
-          <img 
+          <Image 
             src={project.image_url} 
             alt={project.title}
-            className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700 ease-out" 
+            fill
+            className="object-cover transform group-hover:scale-108 transition-transform duration-700 ease-out" 
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
           />
         </div>
       ) : null}

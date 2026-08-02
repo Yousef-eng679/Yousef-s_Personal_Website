@@ -1,30 +1,40 @@
 import { notFound } from 'next/navigation';
-import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
+import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import type { Project } from '@/types/database';
+import { getProjectById } from '@/lib/queries';
+import type { Metadata } from 'next';
 
-export const revalidate = 0;
+export const revalidate = 60;
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data: project } = await supabase.from('projects').select('*').eq('id', id).single();
+  const project = await getProjectById(id);
+
+  if (!project) {
+    return { title: 'Project Not Found' };
+  }
+
   return {
-    title: project?.title || 'Project Detail'
+    title: project.title,
+    description: project.description || `View details for ${project.title} on Yousef.Dev`,
+    openGraph: {
+      title: project.title,
+      description: project.description || undefined,
+      images: project.image_url ? [project.image_url] : undefined,
+    },
   };
 }
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data: project } = await supabase.from('projects').select('*').eq('id', id).single() as { data: Project | null };
+  const project = await getProjectById(id);
   
   if (!project) notFound();
 
   return (
-    <div className="px-8 py-12">
+    <main className="px-8 py-12">
       <div className="max-w-5xl mx-auto">
         <div className="mb-8">
           <Link href="/projects" className="text-accent-purple hover:underline">
@@ -35,7 +45,16 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         {project.video_url ? (
           <video src={project.video_url} controls className="w-full rounded-2xl aspect-video object-cover mb-8" />
         ) : project.image_url ? (
-          <img src={project.image_url} alt={project.title} className="w-full rounded-2xl aspect-video object-cover mb-8" />
+          <div className="aspect-video w-full relative mb-8 overflow-hidden rounded-2xl">
+            <Image 
+              src={project.image_url} 
+              alt={project.title} 
+              fill
+              className="object-cover" 
+              sizes="(max-width: 1024px) 100vw, 1024px"
+              priority
+            />
+          </div>
         ) : null}
 
         <h1 className="text-4xl font-black text-white mb-6">{project.title}</h1>
@@ -79,11 +98,19 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         {project.gallery_urls && project.gallery_urls.length > 0 && (
           <div className="grid grid-cols-2 gap-4">
             {project.gallery_urls.map((url, i) => (
-              <img key={i} src={url} alt={`${project.title} gallery image ${i + 1}`} className="w-full h-auto rounded-xl" />
+              <div key={i} className="aspect-video relative overflow-hidden rounded-xl">
+                <Image 
+                  src={url} 
+                  alt={`${project.title} gallery image ${i + 1}`} 
+                  fill
+                  className="object-cover" 
+                  sizes="(max-width: 1024px) 50vw, 500px"
+                />
+              </div>
             ))}
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }

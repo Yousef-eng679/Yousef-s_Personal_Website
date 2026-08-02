@@ -23,8 +23,25 @@ const mono = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: 'Yousef | AI Engineer & Full-Stack Developer',
-  description: 'Portfolio of Yousef, an AI Engineer and Full-Stack Developer building intelligent applications.',
+  metadataBase: new URL('https://yousef.dev'),
+  title: {
+    default: 'Yousef | AI Engineer & Full-Stack Developer',
+    template: '%s | Yousef.Dev',
+  },
+  description: 'Portfolio of Yousef, an AI Engineer and Full-Stack Developer building intelligent systems, web apps, and AI solutions.',
+  openGraph: {
+    title: 'Yousef | AI Engineer & Full-Stack Developer',
+    description: 'Portfolio of Yousef, an AI Engineer and Full-Stack Developer building intelligent systems, web apps, and AI solutions.',
+    url: 'https://yousef.dev',
+    siteName: 'Yousef.Dev',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Yousef | AI Engineer & Full-Stack Developer',
+    description: 'Portfolio of Yousef, an AI Engineer and Full-Stack Developer.',
+  },
 };
 
 export default async function RootLayout({
@@ -41,10 +58,10 @@ export default async function RootLayout({
         <BackgroundShader />
         <div className="flex min-h-screen">
           <Sidebar profile={profile as Profile} />
-          <main className="lg:ml-64 flex-1">
+          <div className="lg:ml-64 flex-1">
             <Header profile={profile as Profile} />
             {children}
-          </main>
+          </div>
         </div>
       </body>
     </html>

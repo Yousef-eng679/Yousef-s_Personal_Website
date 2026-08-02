@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /ctrl-y0us3f
+Disallow: /auth-y0us3f
+Disallow: /admin
+Disallow: /login
+
+Sitemap: https://yousef.dev/sitemap.xml

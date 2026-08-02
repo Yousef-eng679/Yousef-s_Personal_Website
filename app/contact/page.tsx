@@ -1,14 +1,20 @@
 import { createClient } from '@/utils/supabase/server';
+import type { Metadata } from 'next';
 import type { Profile } from '@/types/database';
 
-export const revalidate = 0;
+export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description: 'Get in touch with Yousef for projects, AI engineering inquiries, or professional collaboration.',
+};
 
 export default async function ContactPage() {
   const supabase = await createClient();
   const { data: profile } = await supabase.from('profile').select('*').single() as { data: Profile | null };
 
   return (
-    <div className="px-8 py-12">
+    <main className="px-8 py-12">
       <div className="max-w-3xl mx-auto">
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-black text-white mb-4">Get in Touch</h1>
@@ -16,20 +22,22 @@ export default async function ContactPage() {
         </div>
 
         <div className="space-y-6">
-          <div className="glass-card p-6 rounded-2xl flex flex-col md:flex-row items-center gap-6 justify-between">
-            <div className="flex items-center gap-6 text-left w-full md:w-auto">
-              <div className="w-12 h-12 bg-accent-purple/20 rounded-xl flex items-center justify-center text-accent-purple">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          {profile?.email && (
+            <div className="glass-card p-6 rounded-2xl flex flex-col md:flex-row items-center gap-6 justify-between">
+              <div className="flex items-center gap-6 text-left w-full md:w-auto">
+                <div className="w-12 h-12 bg-accent-purple/20 rounded-xl flex items-center justify-center text-accent-purple">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-1">Email</h3>
+                  <p className="text-slate-400">{profile.email}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-bold text-white mb-1">Email</h3>
-                <p className="text-slate-400">{profile?.email || 'hello@example.com'}</p>
-              </div>
+              <a href={`mailto:${profile.email}`} className="px-6 py-3 bg-accent-purple hover:bg-accent-purple/90 text-white font-medium rounded-xl transition-colors w-full md:w-auto text-center">
+                Send Email
+              </a>
             </div>
-            <a href={`mailto:${profile?.email || ''}`} className="px-6 py-3 bg-accent-purple hover:bg-accent-purple/90 text-white font-medium rounded-xl transition-colors w-full md:w-auto text-center">
-              Send Email
-            </a>
-          </div>
+          )}
 
           {profile?.github_url && (
             <div className="glass-card p-6 rounded-2xl flex flex-col md:flex-row items-center gap-6 justify-between">
@@ -66,6 +74,6 @@ export default async function ContactPage() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }

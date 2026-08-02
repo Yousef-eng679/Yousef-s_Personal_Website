@@ -1,15 +1,22 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
+import Image from 'next/image';
+import type { Metadata } from 'next';
 import type { Article } from '@/types/database';
 
-export const revalidate = 0;
+export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description: 'Articles, insights, and technical writeups on AI engineering and modern web architecture.',
+};
 
 export default async function BlogPage() {
   const supabase = await createClient();
   const { data: articles } = await supabase.from('articles').select('*').eq('is_published', true).order('published_at', { ascending: false });
 
   return (
-    <div className="px-8 py-12">
+    <main className="px-8 py-12">
       <div className="max-w-7xl mx-auto">
         <div className="mb-12">
           <h1 className="text-4xl font-black text-white mb-4">Blog</h1>
@@ -29,11 +36,13 @@ export default async function BlogPage() {
                 className="glass-card rounded-2xl overflow-hidden flex flex-col group cursor-pointer transition-all duration-300 hover:border-accent-purple/50"
               >
                 {article.cover_image_url && (
-                  <div className="aspect-video w-full overflow-hidden bg-surface-lowest">
-                    <img
+                  <div className="aspect-video w-full overflow-hidden bg-surface-lowest relative">
+                    <Image
                       src={article.cover_image_url}
                       alt={article.title}
-                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      className="object-cover transform group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
                 )}
@@ -53,7 +62,7 @@ export default async function BlogPage() {
                     )}
                     {article.published_at && (
                       <span className="text-slate-500">
-                        {new Date(article.published_at).toLocaleDateString()}
+                        {new Date(article.published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                       </span>
                     )}
                   </div>
@@ -63,6 +72,6 @@ export default async function BlogPage() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }

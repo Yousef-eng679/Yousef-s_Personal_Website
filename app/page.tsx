@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
+import Image from 'next/image';
 import HeroScene from '@/components/3d/HeroScene';
 import HeroSkillCarousel from '@/components/ui/HeroSkillCarousel';
 import ProjectCard from '@/components/ui/ProjectCard';
@@ -7,22 +8,21 @@ import EmptyState from '@/components/ui/EmptyState';
 import type { Article } from '@/types/database';
 import { ArrowRight, Download, Sparkles } from 'lucide-react';
 
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function HomePage() {
   const supabase = await createClient();
-  const { data: profile } = await supabase.from('profile').select('*').single();
-  const { data: featuredProjects } = await supabase
-    .from('projects')
-    .select('*')
-    .eq('is_featured', true)
-    .order('sort_order');
-  const { data: latestArticles } = await supabase
-    .from('articles')
-    .select('*')
-    .eq('is_published', true)
-    .order('published_at', { ascending: false })
-    .limit(3);
+
+  // BN-01 Optimization: Concurrent parallel fetching via Promise.all
+  const [profileRes, projectsRes, articlesRes] = await Promise.all([
+    supabase.from('profile').select('*').single(),
+    supabase.from('projects').select('*').eq('is_featured', true).order('sort_order'),
+    supabase.from('articles').select('*').eq('is_published', true).order('published_at', { ascending: false }).limit(3),
+  ]);
+
+  const profile = profileRes.data;
+  const featuredProjects = projectsRes.data;
+  const latestArticles = articlesRes.data;
 
   return (
     <main className="min-h-screen">
@@ -139,8 +139,14 @@ export default async function HomePage() {
               {latestArticles.map((article: Article) => (
                 <div key={article.id} className="glass-card rounded-2xl overflow-hidden flex flex-col group">
                   {article.cover_image_url && (
-                    <div className="aspect-video w-full overflow-hidden bg-surface-lowest">
-                      <img src={article.cover_image_url} alt={article.title} className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-500" />
+                    <div className="aspect-video w-full overflow-hidden bg-surface-lowest relative">
+                      <Image 
+                        src={article.cover_image_url} 
+                        alt={article.title} 
+                        fill
+                        className="object-cover transform group-hover:scale-105 transition-transform duration-500" 
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
                     </div>
                   )}
                   <div className="p-6 flex-1 flex flex-col">

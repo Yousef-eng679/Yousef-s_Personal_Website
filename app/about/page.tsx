@@ -1,24 +1,39 @@
 import { createClient } from '@/utils/supabase/server';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import Image from 'next/image';
+import type { Metadata } from 'next';
 import type { AboutSection, Profile } from '@/types/database';
 
-export const revalidate = 0;
+export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: 'About Me',
+  description: 'Learn more about Yousef, background in AI engineering and full-stack software development.',
+};
 
 export default async function AboutPage() {
   const supabase = await createClient();
-  const { data: sections } = await supabase.from('about_sections').select('*').order('sort_order');
-  const { data: profile } = await supabase.from('profile').select('*').single() as { data: Profile | null };
+
+  const [sectionsRes, profileRes] = await Promise.all([
+    supabase.from('about_sections').select('*').order('sort_order'),
+    supabase.from('profile').select('*').single(),
+  ]);
+
+  const sections = sectionsRes.data as AboutSection[] | null;
+  const profile = profileRes.data as Profile | null;
 
   return (
-    <div className="px-8 py-12">
+    <main className="px-8 py-12">
       <div className="max-w-4xl mx-auto">
         <div className="mb-12">
           <h1 className="text-4xl font-black text-white mb-4">About Me</h1>
         </div>
 
         {!sections || sections.length === 0 ? (
-          <div className="text-slate-400">No about sections found.</div>
+          <div className="glass-card rounded-2xl p-12 text-center text-slate-400">
+            No about sections found.
+          </div>
         ) : (
           <div>
             {sections.map((section: AboutSection) => (
@@ -29,8 +44,14 @@ export default async function AboutPage() {
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{section.content || ''}</ReactMarkdown>
                   </div>
                   {section.image_url && (
-                    <div className="md:w-1/3">
-                      <img src={section.image_url} alt={section.title} className="w-full rounded-xl object-cover" />
+                    <div className="md:w-1/3 relative min-h-[200px]">
+                      <Image 
+                        src={section.image_url} 
+                        alt={section.title} 
+                        fill
+                        className="rounded-xl object-cover" 
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
                     </div>
                   )}
                 </div>
@@ -39,6 +60,6 @@ export default async function AboutPage() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }
