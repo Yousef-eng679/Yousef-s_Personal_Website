@@ -28,3 +28,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# internal execution files (hidden from github)
+.execution/
+implementation_plan.md
+"Excution prompt .md"
+DESIGN.md

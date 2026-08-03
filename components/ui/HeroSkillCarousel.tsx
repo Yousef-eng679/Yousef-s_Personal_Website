@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const skills = [
-  'AI-Augmented Developer & Vibe Coder',
-  'C++ & Python Software Engineer',
+  'AI & Software Engineering Applied Skills',
+  'C++ & Python Developer',
   'Independent AI Researcher & Builder',
-  'Designing Next-Gen Software Systems',
+  'Designing Next-Gen Systems',
 ];
 
 export default function HeroSkillCarousel() {
