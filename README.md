@@ -153,5 +153,5 @@ Full project documentation lives in [`/Docs`](./Docs/):
 
 **Yousef** — AI-augmented developer, C++ & Python engineer, independent AI researcher.
 
-- Portfolio: [yousef.dev](https://yousef.dev)
+- Portfolio: [yousefdev-chi.vercel.app](https://yousefdev-chi.vercel.app)
 - GitHub: [Yousef-eng679](https://github.com/Yousef-eng679)

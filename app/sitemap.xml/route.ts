@@ -1,8 +1,9 @@
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
+import { getSiteUrl } from '@/lib/siteUrl';
 
 export async function GET() {
-  const baseUrl = 'https://yousef.dev';
+  const baseUrl = getSiteUrl();
   const supabase = await createClient();
 
   const [projectsRes, articlesRes] = await Promise.all([

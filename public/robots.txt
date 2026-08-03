@@ -5,4 +5,4 @@ Disallow: /auth-y0us3f
 Disallow: /admin
 Disallow: /login
 
-Sitemap: https://yousef.dev/sitemap.xml
+Sitemap: https://yousefdev-chi.vercel.app/sitemap.xml

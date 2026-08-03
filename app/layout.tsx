@@ -6,6 +6,7 @@ import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
 import { createClient } from '@/utils/supabase/server';
 import type { Profile } from '@/types/database';
+import { getSiteUrl } from '@/lib/siteUrl';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -22,8 +23,10 @@ const mono = Fira_Code({
   variable: '--font-geist-mono',
 });
 
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://yousef.dev'),
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'Yousef | AI Engineer & Full-Stack Developer',
     template: '%s | Yousef.Dev',
@@ -32,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Yousef | AI Engineer & Full-Stack Developer',
     description: 'Portfolio of Yousef, an AI Engineer and Full-Stack Developer building intelligent systems, web apps, and AI solutions.',
-    url: 'https://yousef.dev',
+    url: siteUrl,
     siteName: 'Yousef.Dev',
     locale: 'en_US',
     type: 'website',
