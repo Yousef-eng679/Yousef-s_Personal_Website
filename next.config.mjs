@@ -4,13 +4,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'aancvsttiralqneuwnxw.supabase.co',
-        port: '',
-        pathname: '/storage/v1/object/public/**',
+        hostname: '**',
       },
       {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
+        protocol: 'http',
+        hostname: '**',
       },
     ],
   },
@@ -33,7 +31,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://aancvsttiralqneuwnxw.supabase.co https://images.unsplash.com; media-src 'self' data: blob: https://aancvsttiralqneuwnxw.supabase.co; connect-src 'self' https://aancvsttiralqneuwnxw.supabase.co wss://aancvsttiralqneuwnxw.supabase.co; frame-ancestors 'none';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https: http:; media-src 'self' data: blob: https: http:; connect-src 'self' https://aancvsttiralqneuwnxw.supabase.co wss://aancvsttiralqneuwnxw.supabase.co; frame-ancestors 'none';",
           },
         ],
       },
