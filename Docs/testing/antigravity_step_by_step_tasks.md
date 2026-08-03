@@ -1,10 +1,4 @@
- Antigravity — Step-by-Step Task Prompts
-
-How to use: run these one at a time, as separate `/goal` calls / separate tasks in the Agent Manager. Wait for each to finish and review its Artifact before starting the next. Fill in the bracketed `[...]` placeholders before pasting.
-
-Fill these in once, reuse across every step:
-- `[TARGET]` = app name or path in this workspace
-- `[ENV]` = environment (e.g. "local dev server at http://localhost:" — must NOT be production)
+ 
 
 ---
 
