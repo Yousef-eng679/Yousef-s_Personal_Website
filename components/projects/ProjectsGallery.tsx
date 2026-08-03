@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Project } from '@/types/database';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
@@ -23,6 +24,21 @@ export default function ProjectsGallery({ initialProjects }: ProjectsGalleryProp
     if (activeCategory === 'all') return true;
     return project.category?.toLowerCase() === activeCategory;
   });
+
+  const renderIcon = (project: Project) => {
+    if (!project.icon_emoji || !project.icon_emoji.trim()) return null;
+    const isUrl = project.icon_emoji.startsWith('http://') || project.icon_emoji.startsWith('https://') || project.icon_emoji.startsWith('/');
+
+    if (isUrl) {
+      return (
+        <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-white/10 shrink-0">
+          <Image src={project.icon_emoji} alt={project.title} fill className="object-cover" />
+        </div>
+      );
+    }
+
+    return <span>{project.icon_emoji}</span>;
+  };
 
   return (
     <div>
@@ -61,10 +77,12 @@ export default function ProjectsGallery({ initialProjects }: ProjectsGalleryProp
             >
               {project.image_url ? (
                 <div className="aspect-video w-full overflow-hidden bg-surface-lowest relative">
-                  <img
+                  <Image
                     src={project.image_url}
                     alt={project.title}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    fill
+                    className="object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                   {project.video_url && (
                     <span className="absolute top-3 right-3 text-[10px] font-bold px-2 py-1 rounded-md bg-black/70 backdrop-blur-md text-slate-200 border border-white/10 flex items-center gap-1">
@@ -87,7 +105,7 @@ export default function ProjectsGallery({ initialProjects }: ProjectsGalleryProp
               <div className="p-8">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-2xl font-bold text-white group-hover:text-accent-purple transition-colors flex items-center gap-2">
-                    <span>{project.icon_emoji || '🚀'}</span>
+                    {renderIcon(project)}
                     <span>{project.title}</span>
                   </h2>
                   {project.category && (

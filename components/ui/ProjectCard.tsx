@@ -42,6 +42,25 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
     }
   };
 
+  const renderIconBadge = () => {
+    if (!project.icon_emoji || !project.icon_emoji.trim()) return null;
+    const isUrl = project.icon_emoji.startsWith('http://') || project.icon_emoji.startsWith('https://') || project.icon_emoji.startsWith('/');
+
+    if (isUrl) {
+      return (
+        <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10 shadow-inner transform group-hover:scale-110 transition-transform duration-300">
+          <Image src={project.icon_emoji} alt={project.title} fill className="object-cover" />
+        </div>
+      );
+    }
+
+    return (
+      <div className={`w-12 h-12 ${colorClass} border rounded-xl flex items-center justify-center shadow-inner transform group-hover:scale-110 transition-transform duration-300`}>
+        <span className="text-2xl">{project.icon_emoji}</span>
+      </div>
+    );
+  };
+
   return (
     <Link 
       href={`/projects/${project.id}`}
@@ -87,11 +106,9 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 
       {/* Header Badge */}
       <div className="flex items-center justify-between mb-4">
-        <div className={`w-12 h-12 ${colorClass} border rounded-xl flex items-center justify-center shadow-inner transform group-hover:scale-110 transition-transform duration-300`}>
-          <span className="text-2xl">{project.icon_emoji || '🚀'}</span>
-        </div>
+        {renderIconBadge()}
         {project.category && (
-          <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400">
+          <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 ml-auto">
             {project.category}
           </span>
         )}
@@ -114,7 +131,7 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
       
       <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
         <span className="text-xs font-bold text-white flex items-center gap-2 group-hover:text-accent-purple transition-colors">
-          <span>View project</span>
+          <span>View Details</span>
           <ArrowRight className="w-3.5 h-3.5 text-accent-purple transition-transform group-hover:translate-x-1.5" />
         </span>
       </div>
