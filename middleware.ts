@@ -26,17 +26,36 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
 
   // AUTH-01: Protect /ctrl-y0us3f routes
-  if (request.nextUrl.pathname.startsWith('/ctrl-y0us3f') && !user) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/auth-y0us3f';
-    return NextResponse.redirect(url);
+  if (request.nextUrl.pathname.startsWith('/ctrl-y0us3f')) {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/auth-y0us3f';
+      return NextResponse.redirect(url);
+    }
+
+    // Verify authorized admin email
+    const { data: profile } = await supabase.from('profile').select('email').single();
+    const allowedEmail = process.env.ADMIN_EMAIL || profile?.email;
+
+    if (allowedEmail && user.email?.toLowerCase() !== allowedEmail.toLowerCase()) {
+      await supabase.auth.signOut();
+      const url = request.nextUrl.clone();
+      url.pathname = '/auth-y0us3f';
+      url.searchParams.set('error', 'unauthorized');
+      return NextResponse.redirect(url);
+    }
   }
 
-  // AUTH-05: Redirect authenticated user from /auth-y0us3f to /ctrl-y0us3f
+  // AUTH-05: Redirect authenticated authorized user from /auth-y0us3f to /ctrl-y0us3f
   if (request.nextUrl.pathname === '/auth-y0us3f' && user) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/ctrl-y0us3f';
-    return NextResponse.redirect(url);
+    const { data: profile } = await supabase.from('profile').select('email').single();
+    const allowedEmail = process.env.ADMIN_EMAIL || profile?.email;
+
+    if (!allowedEmail || user.email?.toLowerCase() === allowedEmail.toLowerCase()) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/ctrl-y0us3f';
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;

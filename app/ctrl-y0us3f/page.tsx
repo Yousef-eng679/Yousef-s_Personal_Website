@@ -77,12 +77,7 @@ export default function AdminPage() {
 
   const fetchData = async () => {
     try {
-      const { data: projectsData, error: projectsError } = await supabase
-        .from('projects')
-        .select('*')
-        .order('sort_order');
-      if (projectsError) throw projectsError;
-      if (projectsData) setProjects(projectsData);
+      const { data: { user } } = await supabase.auth.getUser();
 
       const { data: profileData, error: profileError } = await supabase
         .from('profile')
@@ -90,6 +85,20 @@ export default function AdminPage() {
         .single();
       if (profileError && profileError.code !== 'PGRST116') throw profileError;
       if (profileData) setProfile(profileData);
+
+      const allowedEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL || profileData?.email;
+      if (user && allowedEmail && user.email?.toLowerCase() !== allowedEmail.toLowerCase()) {
+        await supabase.auth.signOut();
+        router.push('/auth-y0us3f?error=unauthorized');
+        return;
+      }
+
+      const { data: projectsData, error: projectsError } = await supabase
+        .from('projects')
+        .select('*')
+        .order('sort_order');
+      if (projectsError) throw projectsError;
+      if (projectsData) setProjects(projectsData);
 
       const { data: articlesData, error: articlesError } = await supabase
         .from('articles')
