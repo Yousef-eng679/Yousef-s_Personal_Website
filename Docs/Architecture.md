@@ -25,8 +25,8 @@ The Yousef.Dev portfolio application is a full-stack, high-performance web engin
 To protect administrative features against automated attacks, password guessing, and endpoint discovery:
 
 1. **Obscured Routes:**
-   - Secret Admin Control Center: `/ctrl-y0us3f`
-   - Secret Magic Link Login: `/auth-y0us3f`
+   - Secret Admin Control Center: `/[secret-admin-route]`
+   - Secret Magic Link Login: `/[secret-auth-route]`
    - Public endpoint elimination: `/admin` and `/login` return `404 Not Found`.
 
 2. **Passwordless Magic Link OTP:**
@@ -34,10 +34,10 @@ To protect administrative features against automated attacks, password guessing,
    - Login uses Supabase Magic Link OTP (`signInWithOtp`). A single-use authentication link is sent directly to the authorized administrator's email.
 
 3. **Edge Middleware Guard (`middleware.ts`):**
-   - Intercepts all incoming requests matching protected paths (`/ctrl-y0us3f`).
+   - Intercepts all incoming requests matching protected paths (`/[secret-admin-route]`).
    - Validates active Supabase session cookies via `supabase.auth.getUser()`.
-   - Redirects unauthenticated traffic attempting to access `/ctrl-y0us3f` back to `/auth-y0us3f`.
-   - Automatically redirects authenticated users away from `/auth-y0us3f` to `/ctrl-y0us3f`.
+   - Redirects unauthenticated traffic attempting to access `/[secret-admin-route]` back to `/[secret-auth-route]`.
+   - Automatically redirects authenticated users away from `/[secret-auth-route]` to `/[secret-admin-route]`.
 
 4. **Security Headers (`next.config.mjs`):**
    - `X-Frame-Options: DENY` (prevents clickjacking attacks).

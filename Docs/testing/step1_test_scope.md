@@ -24,7 +24,7 @@ Environment: Local Dev Server (`http://localhost:`) — Confirmed Non-Production
  . User Roles & Auth Boundaries
 
 . Anonymous / Public User: Read-only access to portfolio showcase, project detail views, articles, about info, and contact links. Accessing `/admin` redirects to `/login`.
-. Authenticated Admin User: Authenticated via Supabase Auth session (`admin@yousef.dev`). Access to `/admin` dashboard with full CRUD privileges and Supabase Storage bucket access (`portfolio-assets`).
+. Authenticated Admin User: Authenticated via Supabase Auth session (`admin@example.com`). Access to `/admin` dashboard with full CRUD privileges and Supabase Storage bucket access (`portfolio-assets`).
 
 ---
 

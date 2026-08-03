@@ -5,7 +5,7 @@ c:/yousef's personal website/
 ├── app/
 │   ├── about/
 │   │   └── page.tsx                     # About Me page displaying profile & admin sections
-│   ├── auth-y0us3f/
+│   ├── [secret-auth-route]/
 │   │   └── page.tsx                     # Secret Magic Link OTP login page (Passwordless)
 │   ├── blog/
 │   │   ├── [slug]/
@@ -14,7 +14,7 @@ c:/yousef's personal website/
 │   │   └── page.tsx                     # Blog listing page
 │   ├── contact/
 │   │   └── page.tsx                     # Contact page with profile email & social links
-│   ├── ctrl-y0us3f/
+│   ├── [secret-admin-route]/
 │   │   └── page.tsx                     # Secret Admin Dashboard (Projects, Articles, About, Profile)
 │   ├── projects/
 │   │   ├── [id]/

@@ -64,7 +64,7 @@ Environment: Local Machine (`http://localhost:`) — Confirmed Non-Production
  X-Frame-Options: DENY
  X-Content-Type-Options: nosniff
  Referrer-Policy: strict-origin-when-cross-origin
- Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://aancvsttiralqneuwnxw.supabase.co https://images.unsplash.com; media-src 'self' data: blob: https://aancvsttiralqneuwnxw.supabase.co; connect-src 'self' https://aancvsttiralqneuwnxw.supabase.co wss://aancvsttiralqneuwnxw.supabase.co; frame-ancestors 'none';
+ Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://YOUR_SUPABASE_PROJECT_ID.supabase.co https://images.unsplash.com; media-src 'self' data: blob: https://YOUR_SUPABASE_PROJECT_ID.supabase.co; connect-src 'self' https://YOUR_SUPABASE_PROJECT_ID.supabase.co wss://YOUR_SUPABASE_PROJECT_ID.supabase.co; frame-ancestors 'none';
  ```
 
 ---

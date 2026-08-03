@@ -18,9 +18,9 @@ This document provides a comprehensive record of all major technical challenges,
 - **Root Cause:** Public UI contained direct links to `/admin`, and traditional email/password authentication exposed the portal to brute-force credential stuffing.
 - **Resolution (Option C Implementation):**
   - Removed all admin icons and links from public layout headers.
-  - Obscured secret admin route to `/ctrl-y0us3f` and secret login route to `/auth-y0us3f`.
+  - Obscured secret admin route to `/[secret-admin-route]` and secret login route to `/[secret-auth-route]`.
   - Replaced password login with passwordless Supabase Magic Link OTP (`signInWithOtp`).
-  - Added Next.js Edge Middleware (`middleware.ts`) session verification to redirect unauthenticated requests away from `/ctrl-y0us3f`.
+  - Added Next.js Edge Middleware (`middleware.ts`) session verification to redirect unauthenticated requests away from `/[secret-admin-route]`.
   - Deleted old `/admin` and `/login` folders (now return `404 Not Found`).
 
 ---

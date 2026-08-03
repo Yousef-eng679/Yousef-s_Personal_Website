@@ -11,7 +11,7 @@ Build Yousef's personal portfolio website using Next.js (App Router), Three.js (
 > [!NOTE]
 > Supabase Live Credentials:
 > The project will use the active Supabase project (`My_personal_Website`):
-> - `NEXT_PUBLIC_SUPABASE_URL`: `https://aancvsttiralqneuwnxw.supabase.co`
+> - `NEXT_PUBLIC_SUPABASE_URL`: `https://YOUR_SUPABASE_PROJECT_ID.supabase.co`
 > - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: `eyJhbGciOiJIUzINiIsInRcCIIkpXVCJ...`
 
  Proposed Changes
